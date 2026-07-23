@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Shelf — reading goal tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,9 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s ease,color .3s ease}
+  body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s ease,color .3s ease;
+    touch-action:manipulation;-webkit-text-size-adjust:100%}
+  button,.cushion,.theme-opt,.bg-opt,nav.tabs button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
   /* ---- page background (sits behind every page, including the 3D room) ---- */
   #bgLayer{position:fixed;inset:0;z-index:-2;display:none;background-size:cover;background-position:center center;background-repeat:no-repeat}
@@ -117,6 +119,70 @@
 
   .deco-left{left:70px;top:70px;width:600px;height:360px}
   .deco-right{right:70px;top:70px;width:600px;height:360px}
+
+  /* ===== 3D side bookcases =====
+     Both side walls are turned so that their local -Z points into the room,
+     so every panel below is rotated/translated toward negative Z. */
+  .deco-left,.deco-right{--depth:58px;transform-style:preserve-3d;
+    background:linear-gradient(180deg,#2a1a0d,#1a1008)}
+  .deco-left .shelf-row,.deco-right .shelf-row,
+  .deco-left .slot,.deco-right .slot{transform-style:preserve-3d}
+
+  /* carcass: top, bottom and two side panels standing out from the wall */
+  .case-panel{position:absolute;pointer-events:none;backface-visibility:visible}
+  .case-panel.top{left:0;right:0;top:0;height:var(--depth);
+    transform-origin:50% 0%;transform:rotateX(-90deg);
+    background:linear-gradient(180deg,#5b3a20,#2c1a0c);box-shadow:inset 0 0 18px rgba(0,0,0,.5)}
+  .case-panel.bottom{left:0;right:0;bottom:0;height:var(--depth);
+    transform-origin:50% 100%;transform:rotateX(90deg);
+    background:linear-gradient(180deg,#7a5231,#3d2712)}
+  .case-panel.left{left:0;top:0;bottom:0;width:var(--depth);
+    transform-origin:0% 50%;transform:rotateY(90deg);
+    background:linear-gradient(90deg,#6d4728,#311e0e)}
+  .case-panel.right{right:0;top:0;bottom:0;width:var(--depth);
+    transform-origin:100% 50%;transform:rotateY(-90deg);
+    background:linear-gradient(90deg,#311e0e,#6d4728)}
+
+  /* each shelf gets a real board: a top surface plus a front lip */
+  .deco-left .shelf-row::after,.deco-right .shelf-row::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:var(--depth);
+    transform-origin:50% 100%;transform:rotateX(90deg);
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 34px),
+      linear-gradient(180deg,#835836 0%,#5c3c22 55%,#38230f 100%)}
+  .deco-left .shelf-row::before,.deco-right .shelf-row::before{
+    content:"";position:absolute;left:0;right:0;bottom:-7px;height:9px;border-radius:1px;
+    transform:translateZ(calc(var(--depth) * -1));
+    background:linear-gradient(180deg,#8e6339 0%,#6b4526 55%,#361f0d 100%);
+    box-shadow:0 2px 5px rgba(0,0,0,.55)}
+
+  /* books become solid blocks: every face the camera can see is drawn */
+  .deco-left .spine,.deco-right .spine{transform-style:preserve-3d;
+    transform:translateZ(calc((var(--depth) - var(--bz,14px)) * -1))}
+  /* page-tops, receding back toward the wall */
+  .deco-left .spine::before,.deco-right .spine::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:var(--bd,32px);
+    transform-origin:50% 0%;transform:rotateX(90deg);
+    background:
+      repeating-linear-gradient(90deg, rgba(120,100,70,.35) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg,#efe6d2,#b6a487)}
+  .deco-left .spine>i,.deco-right .spine>i{position:absolute;display:block;backface-visibility:visible}
+  /* the cover face that turns toward the camera — left wall shows its right edge */
+  .deco-left .spine>.bk-side{right:0;top:0;bottom:0;width:var(--bd,32px);
+    transform-origin:100% 50%;transform:rotateY(90deg);
+    background:linear-gradient(90deg,
+      color-mix(in srgb, var(--c2,#6b4a2b) 60%, #000),
+      color-mix(in srgb, var(--c2,#6b4a2b) 34%, #000))}
+  /* right wall is turned the other way, so its left edge faces the camera */
+  .deco-right .spine>.bk-side{left:0;top:0;bottom:0;width:var(--bd,32px);
+    transform-origin:0% 50%;transform:rotateY(-90deg);
+    background:linear-gradient(90deg,
+      color-mix(in srgb, var(--c1,#6b4a2b) 34%, #000),
+      color-mix(in srgb, var(--c1,#6b4a2b) 60%, #000))}
+  /* underside, seen on any shelf above the eye line */
+  .deco-left .spine>.bk-bot,.deco-right .spine>.bk-bot{left:0;right:0;bottom:0;height:var(--bd,32px);
+    transform-origin:50% 100%;transform:rotateX(-90deg);
+    background:linear-gradient(180deg,#4a4034,#241d15)}
   .anim-case{left:120px;top:150px;width:290px;height:190px}
 
   /* mini counter */
@@ -153,8 +219,7 @@
   .couch-arm{position:absolute;top:30px;bottom:0;width:26px;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#8a5150,#5f3433);box-shadow:inset 0 3px 5px rgba(255,255,255,.12),inset 0 -5px 8px rgba(0,0,0,.35)}
   .couch-arm.left{left:0} .couch-arm.right{right:0}
   .couch-base{position:absolute;left:10px;right:10px;bottom:0;height:22px;border-radius:0 0 10px 10px;background:#5f3433}
-  .cushion{position:relative;flex:1;height:52px;border-radius:10px 10px 5px 5px;background:linear-gradient(180deg,#9c6160,#7a4645);box-shadow:inset 0 3px 6px rgba(255,255,255,.14),inset 0 -5px 8px rgba(0,0,0,.3);cursor:pointer;transition:.15s;display:flex;align-items:flex-start;justify-content:center}
-  .cushion:hover{filter:brightness(1.1);transform:translateY(-2px)}
+  .cushion{position:relative;flex:1;height:52px;border-radius:10px 10px 5px 5px;background:linear-gradient(180deg,#9c6160,#7a4645);box-shadow:inset 0 3px 6px rgba(255,255,255,.14),inset 0 -5px 8px rgba(0,0,0,.3);transition:.15s;display:flex;align-items:flex-start;justify-content:center}
   .cushion::after{content:"";position:absolute;inset:6px;border-radius:8px;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.12)}
   .cushion .toy{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:26px;line-height:1;filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));pointer-events:none}
   .cushion .plus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.55);font-size:16px;font-weight:700;pointer-events:none}
@@ -172,6 +237,14 @@
     background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,var(--sun-a,.4)) 0%, rgba(0,0,0,calc(var(--sun-a,.4)*.55)) 45%, transparent 72%);
     transform:translateX(-50%) scale(var(--sun-w,1.2), var(--sun-w,1.2));
     transform-origin:50% 0;transition:transform .4s ease, background .4s ease}
+
+  /* clicks on 3D-transformed planes are unreliable, so real buttons are
+     laid over the cushions in flat 2D and kept in sync with their screen boxes */
+  .hit-layer{position:absolute;inset:0;z-index:20;pointer-events:none}
+  .hit-layer button{position:absolute;pointer-events:auto;background:transparent;border:0;
+    padding:0;margin:0;cursor:pointer;border-radius:10px}
+  .hit-layer button:focus-visible{outline:3px solid #ffd88a;outline-offset:2px}
+  .cushion.hot{filter:brightness(1.14);transform:translateY(-2px)}
 
   /* ---- HOME hud ---- */
   .arrows{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:20px}
@@ -257,8 +330,14 @@
   #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:999}
 
   @media(max-width:640px){
-    .stage-outer{height:360px}
-    .stage{transform:scale(.66);transform-origin:center}
+    .stage{perspective:2000px}
+    .wrap{padding:0 10px 60px}
+    .stage-outer{margin-left:-10px;margin-right:-10px;border-radius:12px}
+    header.top{padding:20px 0 12px}
+    nav.tabs button{padding:8px 12px;font-size:11.5px}
+    .arrow-btn{min-width:0;width:100%;max-width:320px}
+    .bg-opts{grid-template-columns:repeat(2,1fr)}
+    .seg button{padding:8px 11px;font-size:12.5px}
     .grid2{grid-template-columns:1fr}
     .theme-opts{grid-template-columns:1fr}
     .toy-grid{grid-template-columns:repeat(3,1fr)}
@@ -338,6 +417,7 @@
           </div>
         </div>
       </div>
+      <div class="hit-layer" id="hitLayer"></div>
     </div>
 
     <div class="arrows">
@@ -511,28 +591,71 @@ const DEFAULT = {
 let state = structuredClone(DEFAULT);
 let memoryOnly = false;
 
-/* ---------- persistence ---------- */
-async function load(){
-  try{
-    if(!window.storage) throw new Error("no storage");
-    const r = await window.storage.get(KEY);
-    if(r && r.value){
-      const p=JSON.parse(r.value);
-      state=Object.assign(structuredClone(DEFAULT),p);
-      state.custom=Object.assign(structuredClone(DEFAULT.custom),p.custom||{});
-      state.weather=Object.assign(structuredClone(DEFAULT.weather),p.weather||{});
-      state.bg=Object.assign(structuredClone(DEFAULT.bg),p.bg||{});
-      if(!Array.isArray(state.toys)) state.toys=[null,null,null];
-    }
-  }catch(e){ if(!window.storage) memoryOnly=true; }
+/* ---------- persistence: localStorage first, so data survives closing the app ---------- */
+let storageNote="";
+function lsAvailable(){
+  try{ const k="__t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return true; }
+  catch(e){ return false; }
 }
+const HAS_LS = lsAvailable();
+
+async function load(){
+  // 1. localStorage (works when the file is opened directly, on phone or desktop)
+  if(HAS_LS){
+    try{
+      const raw=localStorage.getItem(KEY);
+      if(raw){ hydrate(JSON.parse(raw)); return; }
+    }catch(e){ /* corrupt entry — fall through */ }
+  }
+  // 2. artifact storage, if this is running inside a host that provides it
+  try{
+    if(window.storage){
+      const r=await window.storage.get(KEY);
+      if(r && r.value){ hydrate(JSON.parse(r.value)); return; }
+    }
+  }catch(e){ /* nothing saved yet */ }
+  if(!HAS_LS && !window.storage){ memoryOnly=true; }
+}
+function hydrate(p){
+  state=Object.assign(structuredClone(DEFAULT),p);
+  state.custom =Object.assign(structuredClone(DEFAULT.custom), p.custom||{});
+  state.weather=Object.assign(structuredClone(DEFAULT.weather),p.weather||{});
+  state.bg     =Object.assign(structuredClone(DEFAULT.bg),     p.bg||{});
+  if(!Array.isArray(state.toys)) state.toys=[null,null,null];
+  if(!Array.isArray(state.books)) state.books=[];
+}
+
 let saveTimer=null;
-function save(){
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(async ()=>{
-    try{ if(!window.storage){memoryOnly=true;return;} await window.storage.set(KEY, JSON.stringify(state)); }
-    catch(e){ memoryOnly=true; }
-  },120);
+function writeNow(){
+  const data=JSON.stringify(state);
+  let wrote=false;
+  if(HAS_LS){
+    try{ localStorage.setItem(KEY,data); wrote=true; storageNote=""; }
+    catch(e){
+      // almost always the quota: a big custom background. Save everything else.
+      try{
+        const lite=JSON.parse(data);
+        if(lite.bg) lite.bg.image=null;
+        localStorage.setItem(KEY,JSON.stringify(lite));
+        wrote=true;
+        storageNote="Your background image was too large to store, so it will clear when you reopen the app. Everything else is saved.";
+      }catch(e2){ storageNote="Storage is full, so changes may not be kept."; }
+    }
+  }
+  if(window.storage){ try{ window.storage.set(KEY,data); wrote=true; }catch(e){} }
+  if(!wrote) memoryOnly=true;
+  updateSaveNote();
+}
+function save(){ clearTimeout(saveTimer); saveTimer=setTimeout(writeNow,150); }
+// never lose the last change if the app is closed or backgrounded
+addEventListener("visibilitychange",()=>{ if(document.hidden){ clearTimeout(saveTimer); writeNow(); } });
+addEventListener("pagehide",()=>{ clearTimeout(saveTimer); writeNow(); });
+
+function updateSaveNote(){
+  const el=document.getElementById("saveNote"); if(!el) return;
+  if(memoryOnly) el.textContent="Heads up: this browser is blocking storage, so changes last only for this session.";
+  else if(storageNote) el.textContent=storageNote;
+  else el.textContent="Everything saves automatically to this device.";
 }
 
 /* ---------- color helpers ---------- */
@@ -593,11 +716,11 @@ function readImageFile(file, cb){
   fr.onload=()=>{
     const img=new Image();
     img.onload=()=>{
-      const max=1600; let w=img.width,h=img.height;
+      const max=1280; let w=img.width,h=img.height;
       if(w>max){ h=Math.round(h*max/w); w=max; }
       const c=document.createElement("canvas"); c.width=w; c.height=h;
       c.getContext("2d").drawImage(img,0,0,w,h);
-      try{ cb(c.toDataURL("image/jpeg",0.72)); }catch(e){ cb(null); }
+      try{ cb(c.toDataURL("image/jpeg",0.68)); }catch(e){ cb(null); }
     };
     img.onerror=()=>cb(null);
     img.src=fr.result;
@@ -625,12 +748,23 @@ function makeSpine(animate){
   const s=document.createElement("div");
   s.className="spine"+(animate?" placing":"");
   s.style.height=(58+Math.random()*38)+"%";
-  s.style.background="linear-gradient(90deg,"+pick(SPINES)+","+pick(SPINES)+")";
+  const c1=pick(SPINES), c2=pick(SPINES);
+  s.style.setProperty("--c1",c1);
+  s.style.setProperty("--c2",c2);
+  s.style.background="linear-gradient(90deg,"+c1+","+c2+")";
+  // how far forward on the shelf it sits, and how deep the book is
+  s.style.setProperty("--bz", (4+Math.random()*22).toFixed(0)+"px");
+  s.style.setProperty("--bd", (26+Math.random()*20).toFixed(0)+"px");
+  // solid faces (styled only inside the 3D side cases)
+  s.innerHTML='<i class="bk-side"></i><i class="bk-bot"></i>';
   return s;
 }
 function fillDeco(el, rows, cols, density){
   buildCase(el, rows, cols);
   allSlots(el).forEach(slot=>{ if(Math.random()<density) slot.appendChild(makeSpine(false)); });
+  ["top","bottom","left","right"].forEach(k=>{
+    const p=document.createElement("div"); p.className="case-panel "+k; el.appendChild(p);
+  });
 }
 
 /* ---------- animated back case ---------- */
@@ -887,14 +1021,68 @@ function renderToys(){
     c.querySelector(".toy").textContent=toy||"";
     c.classList.toggle("has-toy", !!toy);
   });
+  layoutHits();
 }
 let currentCushion=null;
 const toyModal=document.getElementById("toyModal");
-function openToy(i){ currentCushion=i; document.getElementById("toySub").textContent="Pick a friend to sit on cushion "+(i+1)+"."; toyModal.classList.add("show"); }
+function openToy(i){
+  currentCushion=i;
+  document.getElementById("toySub").textContent="Pick a friend to sit on cushion "+(i+1)+".";
+  toyModal.classList.add("show");
+}
 function closeToy(){ toyModal.classList.remove("show"); currentCushion=null; }
-document.getElementById("couch").addEventListener("click",e=>{
-  const c=e.target.closest(".cushion"); if(c) openToy(+c.dataset.i);
-});
+
+/* The cushions live on a 3D-transformed plane, where browsers hit-test
+   unreliably (this is why the mouse could not click them). Real buttons are
+   laid over them in flat 2D instead, so mouse, touch and keyboard all work. */
+function layoutHits(){
+  const layer=document.getElementById("hitLayer");
+  const outer=document.querySelector(".stage-outer");
+  if(!layer||!outer||!outer.offsetParent) return;
+  const ob=outer.getBoundingClientRect();
+  document.querySelectorAll(".cushion").forEach((c,i)=>{
+    let b=layer.children[i];
+    if(!b){
+      b=document.createElement("button");
+      b.type="button";
+      b.addEventListener("click",()=>openToy(i));
+      b.addEventListener("pointerenter",()=>c.classList.add("hot"));
+      b.addEventListener("pointerleave",()=>c.classList.remove("hot"));
+      b.addEventListener("pointercancel",()=>c.classList.remove("hot"));
+      layer.appendChild(b);
+    }
+    const r=c.getBoundingClientRect();
+    if(r.width<2||r.height<2){ b.style.display="none"; return; }
+    const pad=8; // a comfortable finger target
+    b.style.display="block";
+    b.style.left  =(r.left-ob.left-pad)+"px";
+    b.style.top   =(r.top -ob.top -pad)+"px";
+    b.style.width =(r.width +pad*2)+"px";
+    b.style.height=(r.height+pad*2)+"px";
+    b.setAttribute("aria-label",(state.toys[i]?"Change the toy on cushion ":"Add a toy to cushion ")+(i+1));
+  });
+}
+
+/* Scale the room so the whole thing — side bookcases included — fits the screen. */
+function fitStage(){
+  const outer=document.querySelector(".stage-outer");
+  const stage=document.querySelector(".stage");
+  if(!outer||!stage) return;
+  const w=outer.clientWidth||outer.getBoundingClientRect().width;
+  if(!w) return;
+  const phone = window.innerWidth<=640;
+  // phones fit the full scene so both side bookcases clear the edges;
+  // wider screens crop a little for a nicer "looking into a room" framing
+  const target = phone ? 1010 : 940;
+  const sc=Math.min(1, w/target);
+  stage.style.transformOrigin="center center";
+  stage.style.transform = sc<0.999 ? `scale(${sc.toFixed(4)})` : "none";
+  outer.style.height = Math.max(190, Math.round((phone?506:486)*sc)) + "px";
+  layoutHits();
+}
+addEventListener("resize", ()=>{ fitStage(); });
+addEventListener("orientationchange", ()=>setTimeout(fitStage,250));
+
 document.querySelectorAll(".toy-grid button").forEach(b=>{
   b.onclick=()=>{ if(currentCushion!==null){ state.toys[currentCushion]=b.dataset.toy; renderToys(); save(); } closeToy(); };
 });
@@ -1066,6 +1254,7 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
     document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
     document.getElementById("view-"+btn.dataset.view).classList.add("active");
     window.scrollTo({top:0,behavior:"smooth"});
+    if(btn.dataset.view==="home") requestAnimationFrame(fitStage);
   };
 });
 
@@ -1101,7 +1290,13 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
   renderHome();
   renderList();
 
-  if(memoryOnly) document.getElementById("saveNote").textContent="Heads up: storage isn't available here, so changes last only for this session.";
+  updateSaveNote();
+  fitStage();
+  requestAnimationFrame(fitStage);
+  setTimeout(fitStage,300);
+  if(window.ResizeObserver){
+    new ResizeObserver(()=>fitStage()).observe(document.querySelector(".stage-outer"));
+  }
 })();
 </script>
 </body>
