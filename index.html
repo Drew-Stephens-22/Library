@@ -114,6 +114,7 @@
   .spine::after{content:"";position:absolute;left:12%;right:12%;top:14%;height:2px;background:rgba(255,255,255,.35);border-radius:2px}
   .spine.placing{animation:placeIn .5s cubic-bezier(.34,1.4,.5,1)}
   @keyframes placeIn{0%{opacity:0;transform:translate(30px,-34px) rotate(24deg)}55%{opacity:1;transform:translate(0,5px) rotate(-6deg)}100%{opacity:1;transform:translate(0,0) rotate(0)}}
+  .spine.off{opacity:0;visibility:hidden}
   .spine.leaving{animation:leaveOut .3s ease forwards}
   @keyframes leaveOut{to{opacity:0;transform:translateY(-14px) rotate(-12deg)}}
 
@@ -194,14 +195,14 @@
   .mini-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#d8c4a6;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 
   /* ---- window ---- */
-  .window{position:absolute;left:470px;top:150px;width:150px;height:196px;border-radius:8px 8px 4px 4px;
+  .window{position:absolute;left:470px;top:150px;transform-style:flat;backface-visibility:visible;width:150px;height:196px;border-radius:8px 8px 4px 4px;
     background:linear-gradient(180deg,#5a3c22,#3f2915);padding:9px;box-shadow:0 8px 18px rgba(0,0,0,.5),inset 0 0 0 2px rgba(0,0,0,.3);z-index:2}
   .win-sky{position:absolute;inset:9px;border-radius:4px;overflow:hidden}
   .win-cel{position:absolute;border-radius:50%}
   .win-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.9}
   .win-hill{position:absolute;left:-10%;right:-10%;bottom:-6%;height:34%;border-radius:50% 50% 0 0/100% 100% 0 0;background:#1c2a1c;opacity:.85}
   .win-precip{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-  .win-precip{contain:strict}
+  .win-precip{contain:paint}
   .rain{position:absolute;top:-14px;width:1.5px;height:12px;will-change:transform;
     background:linear-gradient(180deg,transparent,rgba(200,225,255,.85));animation:rainFall linear infinite}
   @keyframes rainFall{
@@ -215,32 +216,9 @@
   .win-bars::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:5px;transform:translateX(-50%);background:#4a3018}
   .win-bars::after{content:"";position:absolute;top:50%;left:0;right:0;height:5px;transform:translateY(-50%);background:#4a3018}
   .win-sill{position:absolute;left:-6px;right:-6px;bottom:-8px;height:9px;border-radius:2px;background:linear-gradient(180deg,#6b4a2c,#3f2915);box-shadow:0 3px 6px rgba(0,0,0,.5)}
-  /* snow gathering outside when the weather is set to snow */
-  .win-snowpile{position:absolute;left:-3px;right:-3px;bottom:-1px;height:24px;display:none;z-index:2;
-    background:
-      radial-gradient(circle at 16% 108%, #ffffff 0 15px, transparent 16px),
-      radial-gradient(circle at 44% 112%, #ffffff 0 19px, transparent 20px),
-      radial-gradient(circle at 72% 106%, #ffffff 0 14px, transparent 15px),
-      radial-gradient(circle at 92% 110%, #ffffff 0 12px, transparent 13px),
-      linear-gradient(180deg,#f4f8ff 0%,#dae4f2 100%)}
-  .win-snowcap{position:absolute;left:-11px;right:-11px;bottom:-16px;height:15px;display:none;z-index:3;
-    border-radius:3px;
-    background:
-      radial-gradient(circle at 12% 118%, #ffffff 0 13px, transparent 14px),
-      radial-gradient(circle at 38% 124%, #ffffff 0 16px, transparent 17px),
-      radial-gradient(circle at 64% 118%, #ffffff 0 14px, transparent 15px),
-      radial-gradient(circle at 88% 122%, #ffffff 0 12px, transparent 13px),
-      linear-gradient(180deg,#f7fbff,#cfd9e8);
-    box-shadow:0 3px 6px rgba(0,0,0,.4)}
-  .win-ledgesnow{position:absolute;left:2px;right:2px;top:-7px;height:10px;display:none;z-index:3;
-    border-radius:4px 4px 0 0;
-    background:
-      radial-gradient(circle at 25% 130%, #ffffff 0 11px, transparent 12px),
-      radial-gradient(circle at 62% 136%, #ffffff 0 13px, transparent 14px),
-      linear-gradient(180deg,#ffffff,#e4ecf7)}
-  .window.snowy .win-snowpile,
-  .window.snowy .win-snowcap,
-  .window.snowy .win-ledgesnow{display:block}
+  /* a single smooth drift banked against the outside of the glass */
+  .win-snowpile{position:absolute;left:-1px;right:-1px;bottom:-1px;height:34px;display:none;z-index:2}
+  .window.snowy .win-snowpile{display:block}
 
   /* ---- couch: built as a box so it reads as furniture, not a sticker ----
      It lives on the back wall, whose local +Z points at the viewer, so every
@@ -341,7 +319,8 @@
 
 
   /* ================= OWL ON A BRANCH ================= */
-  .owl-zone{position:absolute;right:40px;top:64px;width:124px;height:120px;z-index:6;pointer-events:none}
+  .owl-zone{position:absolute;right:40px;top:64px;width:124px;height:120px;z-index:6;pointer-events:none;
+    transform-style:flat;will-change:transform;backface-visibility:visible}
   .owl-zone svg{overflow:visible}
   .owl-body{transform-box:fill-box;transform-origin:50% 100%}
   .owl-head{transform-box:fill-box;transform-origin:50% 88%}
@@ -472,6 +451,10 @@
 
   @media(max-width:640px){
     .stage{perspective:2000px}
+    /* the side books keep their spine face only — the extra faces are invisible
+       at phone scale but cost hundreds of composited surfaces */
+    .deco-left .spine>i,.deco-right .spine>i,
+    .deco-left .spine::before,.deco-right .spine::before{display:none}
     .wrap{padding:0 10px 60px}
     .stage-outer{margin-left:-10px;margin-right:-10px;border-radius:12px}
     header.top{padding:20px 0 12px}
@@ -528,12 +511,18 @@
                 <div class="win-stars" id="winStars"></div>
                 <div class="win-hill"></div>
                 <div class="win-precip" id="winPrecip"></div>
-                <div class="win-snowpile"></div>
+                <svg class="win-snowpile" viewBox="0 0 140 34" preserveAspectRatio="none">
+                  <defs><linearGradient id="snowg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d9e3f1"/>
+                  </linearGradient></defs>
+                  <path d="M0,20 C11.7,20 11.7,9 23.3,9 C35,9 35,20 46.7,20
+                           C58.3,20 58.3,9 70,9 C81.7,9 81.7,20 93.3,20
+                           C105,20 105,9 116.7,9 C128.3,9 128.3,20 140,20
+                           L140,34 L0,34 Z" fill="url(#snowg)"/>
+                </svg>
               </div>
               <div class="win-bars"></div>
-              <div class="win-ledgesnow"></div>
               <div class="win-sill"></div>
-              <div class="win-snowcap"></div>
             </div>
 
             <div class="bookcase anim-case" id="animCase"></div>
@@ -969,32 +958,49 @@ function fillDeco(el, rows, cols, density){
 const animCase=document.getElementById("animCase");
 const CASE_ROWS=4, CASE_COLS=7, CAP=CASE_ROWS*CASE_COLS;
 let placedOrder=[];
-/* A spine that is animating out still sits in the DOM, so it must be excluded
-   from every count. Not doing this was what made books vanish when adding fast. */
-function liveIn(slot){ return slot.querySelector(".spine:not(.leaving)"); }
-function filledCount(){ return animCase.querySelectorAll(".spine:not(.leaving)").length; }
-function emptyIndices(){
-  const out=[];
-  allSlots(animCase).forEach((s,i)=>{ if(!liveIn(s)) out.push(i); });
-  return out;
+/* Every slot is built once and its book is simply shown or hidden. Inserting and
+   deleting nodes inside a preserve-3d subtree makes iOS Safari rebuild its
+   compositing layers, which is what made books and the window flicker away. */
+function buildAnimCase(){
+  buildCase(animCase, CASE_ROWS, CASE_COLS);
+  allSlots(animCase).forEach(slot=>{
+    const sp=makeSpine(false);
+    sp.classList.add("off");
+    slot.appendChild(sp);
+  });
+}
+function slotSpines(){ return [...animCase.querySelectorAll(".slot > .spine")]; }
+function isLive(sp){ return !sp.classList.contains("off") && !sp.classList.contains("leaving"); }
+function filledCount(){ return slotSpines().filter(isLive).length; }
+
+function showSpine(sp, animate){
+  clearTimeout(sp._t); sp._t=null;
+  sp.classList.remove("off","leaving");
+  if(animate){ sp.classList.remove("placing"); void sp.offsetWidth; sp.classList.add("placing"); }
+}
+function hideSpine(sp){
+  clearTimeout(sp._t);
+  sp.classList.remove("placing");
+  sp.classList.add("leaving");
+  sp._t=setTimeout(()=>{ sp.classList.remove("leaving"); sp.classList.add("off"); sp._t=null; },300);
 }
 function placeOne(animate){
-  const e=emptyIndices(); if(!e.length) return;
-  const idx=e[Math.floor(Math.random()*e.length)];
-  const slot=allSlots(animCase)[idx];
-  slot.querySelectorAll(".spine.leaving").forEach(g=>g.remove()); // clear any ghost first
-  slot.appendChild(makeSpine(animate));
-  placedOrder.push(idx);
+  const sps=slotSpines();
+  const free=sps.map((sp,i)=>({sp,i})).filter(o=>!isLive(o.sp));
+  if(!free.length) return;
+  const c=free[Math.floor(Math.random()*free.length)];
+  showSpine(c.sp, animate);
+  placedOrder.push(c.i);
 }
 function removeOne(){
-  const slots=allSlots(animCase);
+  const sps=slotSpines();
   while(placedOrder.length){
     const idx=placedOrder.pop();
-    const sp=slots[idx] && liveIn(slots[idx]);
-    if(sp){ sp.classList.add("leaving"); setTimeout(()=>sp.remove(),320); return; }
+    const sp=sps[idx];
+    if(sp && isLive(sp)){ hideSpine(sp); return; }
   }
-  const live=animCase.querySelectorAll(".spine:not(.leaving)");
-  if(live.length){ const sp=live[live.length-1]; sp.classList.add("leaving"); setTimeout(()=>sp.remove(),320); }
+  const live=sps.filter(isLive);
+  if(live.length) hideSpine(live[live.length-1]);
 }
 /* the shelf is always reconciled against the count, so spamming cannot desync it */
 function syncCase(animate){
@@ -1051,7 +1057,8 @@ function renderPrecip(){
   const win=document.getElementById("window");
   if(win) win.classList.toggle("snowy", p==="snow");
   if(p==="none") return;
-  const n=p==="rain"?34:26;
+  const small=window.innerWidth<=640;
+  const n = p==="rain" ? (small?16:34) : (small?12:26);
   for(let i=0;i<n;i++){
     const d=document.createElement("div");
     if(p==="rain"){
@@ -1333,8 +1340,11 @@ function fitStage(){
   const target = phone ? 1010 : 940;
   const sc=Math.min(1, w/target);
   stage.style.transformOrigin="center center";
-  stage.style.transform = sc<0.999 ? `scale(${sc.toFixed(4)})` : "none";
-  outer.style.height = Math.max(240, Math.round((phone?672:486)*sc)) + "px";
+  const tf = sc<0.999 ? `scale(${sc.toFixed(4)})` : "none";
+  const ht = Math.max(240, Math.round((phone?672:486)*sc)) + "px";
+  // only touch the DOM when something actually changed
+  if(stage.style.transform!==tf) stage.style.transform=tf;
+  if(outer.style.height!==ht)   outer.style.height=ht;
   layoutHits();
   const bub=document.getElementById("owlBubble");
   if(bub && bub.classList.contains("show") && typeof positionBubble==="function") positionBubble();
@@ -1624,10 +1634,12 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
   markSeg("segPrecip", state.weather.precip);
   markSeg("segSeason", state.season);
 
-  fillDeco(document.getElementById("decoLeft"), 5, 10, 0.82);
-  fillDeco(document.getElementById("decoRight"), 5, 10, 0.82);
-  buildCase(animCase, CASE_ROWS, CASE_COLS);
-  syncCase();
+  const small = window.innerWidth<=640;
+  const cols  = small ? 7 : 10;
+  fillDeco(document.getElementById("decoLeft"), 5, cols, 0.82);
+  fillDeco(document.getElementById("decoRight"), 5, cols, 0.82);
+  buildAnimCase();
+  syncCase(false);
 
   renderWeather();
   renderGarland();
@@ -1642,7 +1654,7 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
   requestAnimationFrame(fitStage);
   setTimeout(fitStage,300);
   if(window.ResizeObserver){
-    new ResizeObserver(()=>fitStage()).observe(document.querySelector(".stage-outer"));
+    new ResizeObserver(()=>fitStage()).observe(document.querySelector(".wrap"));
   }
 })();
 </script>
