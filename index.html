@@ -187,11 +187,11 @@
 
   /* mini counter */
   .mini-counter{position:absolute;right:150px;top:130px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3}
-  .mini-col{position:relative;width:78px;height:204px;background:rgba(20,12,6,.55);border:2px solid var(--wood-shelf2);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 24px rgba(0,0,0,.6)}
+  .mini-col{position:relative;width:94px;height:210px;background:rgba(20,12,6,.55);border:2px solid var(--wood-shelf2);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 24px rgba(0,0,0,.6)}
   .mini-fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:repeating-linear-gradient(0deg, rgba(0,0,0,.25) 0 1.5px, transparent 1.5px 20px),linear-gradient(180deg, color-mix(in srgb,var(--accent) 76%,#fff), var(--accent) 45%, var(--accent-ink));box-shadow:inset 0 3px 0 rgba(255,255,255,.3);transition:height .55s cubic-bezier(.22,1,.36,1)}
-  .mini-pct{position:absolute;top:8px;left:0;right:0;text-align:center;font-family:"Fraunces",serif;font-weight:900;font-size:20px;color:#fff5e6;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
-  .mini-nums{font-family:"JetBrains Mono",monospace;font-size:13px;color:#f2e4cf;text-shadow:0 1px 2px rgba(0,0,0,.6)}
-  .mini-label{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:#d8c4a6;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  .mini-pct{position:absolute;top:8px;left:0;right:0;text-align:center;font-family:"Fraunces",serif;font-weight:900;font-size:25px;color:#fff5e6;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
+  .mini-nums{font-family:"JetBrains Mono",monospace;font-size:16px;color:#f2e4cf;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  .mini-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#d8c4a6;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 
   /* ---- window ---- */
   .window{position:absolute;left:470px;top:150px;width:150px;height:196px;border-radius:8px 8px 4px 4px;
@@ -201,10 +201,16 @@
   .win-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.9}
   .win-hill{position:absolute;left:-10%;right:-10%;bottom:-6%;height:34%;border-radius:50% 50% 0 0/100% 100% 0 0;background:#1c2a1c;opacity:.85}
   .win-precip{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-  .rain{position:absolute;top:-14px;width:1.5px;height:12px;background:linear-gradient(180deg,transparent,rgba(200,225,255,.85));animation:rainFall linear infinite}
-  @keyframes rainFall{to{transform:translateY(230px)}}
-  .snow{position:absolute;top:-8px;border-radius:50%;background:#fff;opacity:.9;animation:snowFall linear infinite}
-  @keyframes snowFall{to{transform:translateY(230px) translateX(10px)}}
+  .win-precip{contain:strict}
+  .rain{position:absolute;top:-14px;width:1.5px;height:12px;will-change:transform;
+    background:linear-gradient(180deg,transparent,rgba(200,225,255,.85));animation:rainFall linear infinite}
+  @keyframes rainFall{
+    from{transform:translateY(0) rotate(13deg)}
+    to{transform:translateY(232px) rotate(13deg)}}
+  .snow{position:absolute;top:-8px;border-radius:50%;background:#fff;opacity:.9;will-change:transform;animation:snowFall linear infinite}
+  @keyframes snowFall{
+    from{transform:translateY(0) translateX(0)}
+    to{transform:translateY(232px) translateX(12px)}}
   .win-bars{position:absolute;inset:9px;pointer-events:none;border-radius:4px;box-shadow:inset 0 0 0 3px #4a3018}
   .win-bars::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:5px;transform:translateX(-50%);background:#4a3018}
   .win-bars::after{content:"";position:absolute;top:50%;left:0;right:0;height:5px;transform:translateY(-50%);background:#4a3018}
@@ -221,7 +227,7 @@
   .couch-base{position:absolute;left:10px;right:10px;bottom:0;height:22px;border-radius:0 0 10px 10px;background:#5f3433}
   .cushion{position:relative;flex:1;height:52px;border-radius:10px 10px 5px 5px;background:linear-gradient(180deg,#9c6160,#7a4645);box-shadow:inset 0 3px 6px rgba(255,255,255,.14),inset 0 -5px 8px rgba(0,0,0,.3);transition:.15s;display:flex;align-items:flex-start;justify-content:center}
   .cushion::after{content:"";position:absolute;inset:6px;border-radius:8px;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.12)}
-  .cushion .toy{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:26px;line-height:1;filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));pointer-events:none}
+  .cushion .toy{position:absolute;top:-42px;left:50%;transform:translateX(-50%);font-size:52px;line-height:1;filter:drop-shadow(0 4px 4px rgba(0,0,0,.45));pointer-events:none}
   .cushion .plus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.55);font-size:16px;font-weight:700;pointer-events:none}
   .cushion.has-toy .plus{display:none}
 
@@ -245,6 +251,75 @@
     padding:0;margin:0;cursor:pointer;border-radius:10px}
   .hit-layer button:focus-visible{outline:3px solid #ffd88a;outline-offset:2px}
   .cushion.hot{filter:brightness(1.14);transform:translateY(-2px)}
+
+  /* ---- always-visible flat readout (the 3D column gets tiny on a phone) ---- */
+  .flat-readout{display:flex;align-items:center;gap:12px;margin:14px auto 0;max-width:420px}
+  .fr-bar{flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--text) 12%, var(--surface));
+    border:1px solid var(--border);overflow:hidden}
+  .fr-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,
+    color-mix(in srgb,var(--accent) 72%,#fff), var(--accent));transition:width .5s cubic-bezier(.22,1,.36,1)}
+  .fr-text{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .fr-text b{color:var(--text);font-size:15px}
+
+  /* ---- owl thought bubble: flat overlay so it stays readable at any room scale ---- */
+  .owl-bubble{position:absolute;top:12px;right:12px;max-width:min(62%,260px);z-index:26;
+    background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:14px;
+    padding:10px 13px;font-size:13.5px;line-height:1.35;box-shadow:0 10px 24px rgba(0,0,0,.35);
+    opacity:0;transform:translateY(-6px) scale(.94);pointer-events:none;
+    transition:opacity .3s ease, transform .3s cubic-bezier(.34,1.4,.5,1)}
+  .owl-bubble.show{opacity:1;transform:none}
+  .owl-bubble::after{content:"";position:absolute;right:26px;bottom:-7px;width:12px;height:12px;
+    background:var(--surface);border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+    transform:rotate(45deg)}
+  .owl-bubble .who{display:block;font-family:"JetBrains Mono",monospace;font-size:9.5px;
+    letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+
+
+  /* ================= OWL ON A BRANCH ================= */
+  .owl-zone{position:absolute;right:8px;top:88px;width:136px;height:132px;z-index:4;pointer-events:none}
+  .owl-zone svg{overflow:visible}
+  .owl-body{transform-box:fill-box;transform-origin:50% 100%}
+  .owl-head{transform-box:fill-box;transform-origin:50% 88%}
+  .owl-wing{transform-box:fill-box}
+  .owl-wing.l{transform-origin:92% 12%}
+  .owl-wing.r{transform-origin:8% 12%}
+
+  /* wing flap */
+  @keyframes wingL{0%,100%{transform:rotate(0)}50%{transform:rotate(-46deg)}}
+  @keyframes wingR{0%,100%{transform:rotate(0)}50%{transform:rotate(46deg)}}
+  .owl.flap .owl-wing.l{animation:wingL .26s ease-in-out 4}
+  .owl.flap .owl-wing.r{animation:wingR .26s ease-in-out 4}
+  .owl.flying .owl-wing.l{animation:wingL .2s ease-in-out infinite}
+  .owl.flying .owl-wing.r{animation:wingR .2s ease-in-out infinite}
+
+  /* head turn */
+  @keyframes headTurn{
+    0%,100%{transform:rotate(0) translateX(0)}
+    25%{transform:rotate(-15deg) translateX(-3px)}
+    60%{transform:rotate(14deg) translateX(3px)}}
+  .owl.turn .owl-head{animation:headTurn 2.1s ease-in-out}
+
+  /* blink */
+  @keyframes blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.12)}}
+  .owl-eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5.4s ease-in-out infinite}
+
+  /* fly down to the floor, peck, fly back up */
+  @keyframes owlFly{
+    0%{transform:translate(0,0) rotate(0)}
+    10%{transform:translate(-14px,-26px) rotate(-9deg)}
+    38%{transform:translate(-58px,268px) rotate(5deg)}
+    46%,74%{transform:translate(-62px,292px) rotate(0)}
+    88%{transform:translate(-18px,-16px) rotate(-7deg)}
+    100%{transform:translate(0,0) rotate(0)}}
+  .owl.fly{animation:owlFly 7s cubic-bezier(.4,.1,.5,1)}
+
+  /* pecking at the floor */
+  @keyframes peck{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(7px) rotate(15deg)}}
+  .owl.peck .owl-head{animation:peck .42s ease-in-out 4}
+
+  @media(prefers-reduced-motion:reduce){
+    .owl.fly,.owl.flap .owl-wing,.owl.turn .owl-head,.owl.peck .owl-head,.owl-eyes{animation:none}
+  }
 
   /* ---- HOME hud ---- */
   .arrows{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:20px}
@@ -319,7 +394,7 @@
   .toy-sheet{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;width:min(360px,92vw);box-shadow:0 30px 60px rgba(0,0,0,.4)}
   .toy-sheet-title{font-family:"Fraunces",serif;font-weight:600;font-size:20px;margin-bottom:4px}
   .toy-sheet-sub{color:var(--muted);font-size:13px;margin-bottom:16px}
-  .toy-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .toy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .toy-grid button{display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:12px 4px;cursor:pointer;transition:.15s}
   .toy-grid button:hover{border-color:var(--accent);transform:translateY(-2px)}
   .toy-grid .emo{font-size:28px;line-height:1}
@@ -406,6 +481,57 @@
               </div>
             </div>
 
+
+            <div class="owl-zone">
+              <svg viewBox="0 0 136 132" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- branch growing out of the log wall -->
+                <path d="M136,74 C112,72 96,78 74,80 C58,81 44,80 26,84"
+                      stroke="#5a3a1f" stroke-width="9" fill="none" stroke-linecap="round"/>
+                <path d="M136,74 C112,72 96,78 74,80 C58,81 44,80 26,84"
+                      stroke="#7a5230" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/>
+                <path d="M92,79 l12,-13 M104,66 l9,3" stroke="#5a3a1f" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <ellipse cx="112" cy="60" rx="8" ry="5" fill="#3f7a3d" transform="rotate(-24 112 60)"/>
+                <ellipse cx="99" cy="61" rx="7" ry="4.4" fill="#4c8f45" transform="rotate(-38 99 61)"/>
+                <ellipse cx="34" cy="80" rx="7" ry="4.4" fill="#3f7a3d" transform="rotate(16 34 80)"/>
+
+                <g class="owl" id="owl">
+                  <g class="owl-body">
+                    <!-- feet gripping the branch -->
+                    <path d="M56,78 l-3,7 M60,78 l0,7 M64,78 l3,7" stroke="#d8a13c" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M72,78 l-3,7 M76,78 l0,7 M80,78 l3,7" stroke="#d8a13c" stroke-width="3" stroke-linecap="round"/>
+                    <!-- wings behind the body -->
+                    <g class="owl-wing l"><ellipse cx="46" cy="52" rx="9" ry="19" fill="#6f5136" transform="rotate(9 46 52)"/></g>
+                    <g class="owl-wing r"><ellipse cx="90" cy="52" rx="9" ry="19" fill="#6f5136" transform="rotate(-9 90 52)"/></g>
+                    <!-- body -->
+                    <ellipse cx="68" cy="54" rx="23" ry="26" fill="#8a6a4a"/>
+                    <ellipse cx="68" cy="60" rx="15" ry="18" fill="#c8ab86"/>
+                    <path d="M58,64 q4,4 8,0 M70,64 q4,4 8,0 M62,72 q4,4 8,0" stroke="#a98a63" stroke-width="1.6" fill="none"/>
+                    <g class="owl-head">
+                      <!-- ear tufts -->
+                      <path d="M52,26 l-5,-13 l11,7 Z" fill="#7a5a3c"/>
+                      <path d="M84,26 l5,-13 l-11,7 Z" fill="#7a5a3c"/>
+                      <circle cx="68" cy="34" r="21" fill="#8a6a4a"/>
+                      <circle cx="68" cy="36" r="17" fill="#9a7a56"/>
+                      <g class="owl-eyes">
+                        <circle cx="60" cy="33" r="8" fill="#fdf6e6"/>
+                        <circle cx="76" cy="33" r="8" fill="#fdf6e6"/>
+                        <circle cx="61" cy="34" r="4.2" fill="#2a1d12"/>
+                        <circle cx="75" cy="34" r="4.2" fill="#2a1d12"/>
+                        <circle cx="62.4" cy="32.4" r="1.5" fill="#fff"/>
+                        <circle cx="76.4" cy="32.4" r="1.5" fill="#fff"/>
+                      </g>
+                      <path d="M68,38 l4.5,6 l-9,0 Z" fill="#e0a52f"/>
+                      <!-- graduation cap -->
+                      <path d="M68,8 L92,17 L68,26 L44,17 Z" fill="#20242c"/>
+                      <path d="M58,21 l0,8 q10,6 20,0 l0,-8" fill="#2b3038"/>
+                      <path d="M92,17 C93,24 92,29 89,33" stroke="#e6c34a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                      <circle cx="89" cy="34" r="3.2" fill="#e6c34a"/>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+
             <div class="mini-counter">
               <div class="mini-label">goal</div>
               <div class="mini-col">
@@ -418,6 +544,12 @@
         </div>
       </div>
       <div class="hit-layer" id="hitLayer"></div>
+      <div class="owl-bubble" id="owlBubble"><span class="who">Professor Owl</span><span id="owlQuote"></span></div>
+    </div>
+
+    <div class="flat-readout">
+      <div class="fr-bar"><div class="fr-fill" id="frFill"></div></div>
+      <div class="fr-text"><b id="frRead">0</b> / <span id="frGoal">30</span> &nbsp;<span id="frPct">0%</span></div>
     </div>
 
     <div class="arrows">
@@ -447,7 +579,7 @@
       </div>
       <div style="margin-top:14px"><label class="fld" for="bSeries">Series (optional)</label><input type="text" id="bSeries" placeholder="Hainish Cycle"></div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-        <button class="btn" id="addBookBtn">Add to list</button>
+        <button class="btn" id="addBookBtn">To Be Read</button>
         <button class="btn ghost" id="addDoneBtn">Add as already read</button>
       </div>
     </div>
@@ -566,6 +698,7 @@
       <button data-toy="🐸"><span class="emo">🐸</span><span class="cap">Frog</span></button>
       <button data-toy="🦦"><span class="emo">🦦</span><span class="cap">Otter</span></button>
       <button data-toy="🦅"><span class="emo">🦅</span><span class="cap">Bald eagle</span></button>
+      <button data-toy="🦃"><span class="emo">🦃</span><span class="cap">Turkey</span></button>
     </div>
     <div class="toy-actions">
       <button class="btn ghost" id="toyRemove">Remove toy</button>
@@ -771,27 +904,40 @@ function fillDeco(el, rows, cols, density){
 const animCase=document.getElementById("animCase");
 const CASE_ROWS=4, CASE_COLS=7, CAP=CASE_ROWS*CASE_COLS;
 let placedOrder=[];
-function emptyIndices(){ const out=[]; allSlots(animCase).forEach((s,i)=>{ if(!s.querySelector(".spine")) out.push(i); }); return out; }
+/* A spine that is animating out still sits in the DOM, so it must be excluded
+   from every count. Not doing this was what made books vanish when adding fast. */
+function liveIn(slot){ return slot.querySelector(".spine:not(.leaving)"); }
+function filledCount(){ return animCase.querySelectorAll(".spine:not(.leaving)").length; }
+function emptyIndices(){
+  const out=[];
+  allSlots(animCase).forEach((s,i)=>{ if(!liveIn(s)) out.push(i); });
+  return out;
+}
 function placeOne(animate){
   const e=emptyIndices(); if(!e.length) return;
   const idx=e[Math.floor(Math.random()*e.length)];
-  allSlots(animCase)[idx].appendChild(makeSpine(animate)); placedOrder.push(idx);
+  const slot=allSlots(animCase)[idx];
+  slot.querySelectorAll(".spine.leaving").forEach(g=>g.remove()); // clear any ghost first
+  slot.appendChild(makeSpine(animate));
+  placedOrder.push(idx);
 }
 function removeOne(){
-  if(!placedOrder.length){
-    const filled=[...allSlots(animCase)].filter(s=>s.querySelector(".spine"));
-    if(filled.length) filled[filled.length-1].querySelector(".spine").remove();
-    return;
+  const slots=allSlots(animCase);
+  while(placedOrder.length){
+    const idx=placedOrder.pop();
+    const sp=slots[idx] && liveIn(slots[idx]);
+    if(sp){ sp.classList.add("leaving"); setTimeout(()=>sp.remove(),320); return; }
   }
-  const idx=placedOrder.pop();
-  const spine=allSlots(animCase)[idx].querySelector(".spine");
-  if(spine){ spine.classList.add("leaving"); setTimeout(()=>spine.remove(),300); }
+  const live=animCase.querySelectorAll(".spine:not(.leaving)");
+  if(live.length){ const sp=live[live.length-1]; sp.classList.add("leaving"); setTimeout(()=>sp.remove(),320); }
 }
-function filledCount(){ return [...allSlots(animCase)].filter(s=>s.querySelector(".spine")).length; }
-function syncCase(){
-  const want=Math.min(state.read,CAP), have=filledCount();
-  if(have<want) for(let i=have;i<want;i++) placeOne(false);
-  else if(have>want) for(let i=have;i>want;i--) removeOne();
+/* the shelf is always reconciled against the count, so spamming cannot desync it */
+function syncCase(animate){
+  const want=Math.min(state.read,CAP);
+  let guard=0;
+  while(filledCount()<want && guard++<CAP+2) placeOne(animate);
+  guard=0;
+  while(filledCount()>want && guard++<CAP+2) removeOne();
 }
 
 /* ---------- window / weather ---------- */
@@ -988,6 +1134,26 @@ function renderSeasonDecor(){
           <circle cx="35" cy="88" r="4.2" fill="#f1c40f"/><circle cx="88" cy="90" r="4.2" fill="#f5d23b"/>
         </svg>
       </div>`;
+  }else if(state.season==="thanksgiving"){
+    d.innerHTML=`
+      <div class="decor-item" style="left:655px;bottom:1px;width:124px;height:92px">
+        <div class="gshadow" style="width:96%;height:21px"></div>
+        <svg viewBox="0 0 124 92" width="124" height="92">
+          <path d="M96,44 C96,26 74,20 56,28 C40,35 30,50 16,62 C28,74 44,78 60,74 C80,69 96,60 96,44 Z"
+                fill="#c08a3e" stroke="#8f6127" stroke-width="2"/>
+          <path d="M16,62 C24,56 30,52 36,44" stroke="#8f6127" stroke-width="2.4" fill="none"/>
+          <path d="M92,40 q-10,-6 -20,-4" stroke="#8f6127" stroke-width="2" fill="none"/>
+          <ellipse cx="86" cy="64" rx="13" ry="11" fill="#e07a2a"/>
+          <path d="M86,53 v-5" stroke="#4a7a35" stroke-width="3" stroke-linecap="round"/>
+          <path d="M78,64 q8,-7 16,0" stroke="#c2661f" stroke-width="1.6" fill="none"/>
+          <ellipse cx="104" cy="72" rx="10" ry="8.5" fill="#d9b02f"/>
+          <ellipse cx="66" cy="74" rx="9" ry="7.5" fill="#8fae3c"/>
+          <ellipse cx="48" cy="78" rx="11" ry="8" fill="#c94f34"/>
+          <path d="M112,58 l6,-9 l4,10 Z" fill="#b8532a"/>
+          <ellipse cx="30" cy="80" rx="8" ry="6" fill="#e0a02b"/>
+          <path d="M20,74 q9,-5 18,-1" stroke="#a8761f" stroke-width="1.6" fill="none"/>
+        </svg>
+      </div>`;
   }else if(state.season==="easter"){
     d.innerHTML=`
       <div class="decor-item" style="left:659px;bottom:1px;width:116px;height:94px">
@@ -1077,7 +1243,7 @@ function fitStage(){
   const sc=Math.min(1, w/target);
   stage.style.transformOrigin="center center";
   stage.style.transform = sc<0.999 ? `scale(${sc.toFixed(4)})` : "none";
-  outer.style.height = Math.max(190, Math.round((phone?506:486)*sc)) + "px";
+  outer.style.height = Math.max(215, Math.round((phone?560:486)*sc)) + "px";
   layoutHits();
 }
 addEventListener("resize", ()=>{ fitStage(); });
@@ -1099,19 +1265,87 @@ function renderHome(){
   const ratio=state.goal>0?state.read/state.goal:0;
   miniFill.style.height=Math.max(0,Math.min(100,ratio*100))+"%";
   miniPct.textContent=Math.round(ratio*100)+"%";
+  const pct=Math.round(ratio*100);
+  document.getElementById("frFill").style.width=Math.max(0,Math.min(100,ratio*100))+"%";
+  document.getElementById("frRead").textContent=state.read;
+  document.getElementById("frGoal").textContent=state.goal;
+  document.getElementById("frPct").textContent=pct+"%";
   if(state.read>state.goal){ overBadge.textContent="🎉 "+(state.read-state.goal)+" past your goal"; overBadge.classList.add("show"); }
   else if(state.read===state.goal && state.goal>0){ overBadge.textContent="🎉 goal reached — nice work"; overBadge.classList.add("show"); }
   else overBadge.classList.remove("show");
 }
 document.getElementById("addBtn").onclick=()=>{
   const was=state.read; state.read++; renderHome(); save();
-  if(filledCount()<Math.min(state.read,CAP)) placeOne(true);
+  syncCase(true);
+  owlSays();
   if(was<state.goal && state.read>=state.goal) fireConfetti(1);
   else if(state.read>state.goal) fireConfetti(0.4);
 };
 document.getElementById("subBtn").onclick=()=>{
-  if(state.read>0){ state.read--; renderHome(); save(); if(filledCount()>Math.min(state.read,CAP)) removeOne(); }
+  if(state.read>0){ state.read--; renderHome(); save(); syncCase(false); }
 };
+
+/* ---------- the owl ---------- */
+const OWL_LINES=[
+  "Another one finished. That is how shelves get heavy.",
+  "Every book you close makes the next one easier to open.",
+  "Look at you, quietly building a whole library.",
+  "A page a day still ends in a finished story.",
+  "That is one more world you have been to.",
+  "Reading is the rare habit that never runs out of road.",
+  "Your future self is grateful for this one.",
+  "Slow readers and fast readers arrive at the same last page.",
+  "One more spine on the shelf. Well earned.",
+  "You did not need permission to be well read. You just kept going.",
+  "Books remember the people who finish them.",
+  "The stack you have read is taller than you think.",
+  "Curiosity fed again. Good.",
+  "No wasted hours in a book you enjoyed."
+];
+const owl=document.getElementById("owl");
+const owlBubble=document.getElementById("owlBubble");
+const owlQuote=document.getElementById("owlQuote");
+let owlBusy=false, owlBubbleTimer=null, owlIdleTimer=null;
+
+function owlRun(cls, ms, then){
+  if(!owl) return;
+  owlBusy=true;
+  owl.classList.add(cls);
+  setTimeout(()=>{ owl.classList.remove(cls); owlBusy=false; if(then) then(); }, ms);
+}
+function owlFlap(){ owlRun("flap",1100); }
+function owlTurn(){ owlRun("turn",2150); }
+function owlFly(){
+  if(!owl) return;
+  owlBusy=true;
+  owl.classList.add("fly","flying");
+  // peck once he is down on the floor
+  setTimeout(()=>{ owl.classList.add("peck"); },3300);
+  setTimeout(()=>{ owl.classList.remove("peck"); },5100);
+  setTimeout(()=>{ owl.classList.remove("fly","flying"); owlBusy=false; },7050);
+}
+function owlIdle(){
+  clearTimeout(owlIdleTimer);
+  const wait=8000+Math.random()*7000;           // roughly every ten seconds
+  owlIdleTimer=setTimeout(()=>{
+    if(!document.hidden && document.getElementById("view-home").classList.contains("active") && !owlBusy){
+      const r=Math.random();
+      if(r<0.42) owlFlap();
+      else if(r<0.80) owlTurn();
+      else owlFly();
+    }
+    owlIdle();
+  }, wait);
+}
+/* only speaks when a book is added to the home counter */
+function owlSays(){
+  if(!owlBubble) return;
+  owlQuote.textContent=pick(OWL_LINES);
+  owlBubble.classList.add("show");
+  if(!owlBusy) owlFlap();
+  clearTimeout(owlBubbleTimer);
+  owlBubbleTimer=setTimeout(()=>owlBubble.classList.remove("show"), 5200);
+}
 
 /* ---------- confetti ---------- */
 const cvs=document.getElementById("confetti"), cx=cvs.getContext("2d");
@@ -1291,6 +1525,7 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
   renderList();
 
   updateSaveNote();
+  owlIdle();
   fitStage();
   requestAnimationFrame(fitStage);
   setTimeout(fitStage,300);
