@@ -117,8 +117,8 @@
   .spine.leaving{animation:leaveOut .3s ease forwards}
   @keyframes leaveOut{to{opacity:0;transform:translateY(-14px) rotate(-12deg)}}
 
-  .deco-left{left:70px;top:70px;width:600px;height:360px}
-  .deco-right{right:70px;top:70px;width:600px;height:360px}
+  .deco-left{left:70px;top:96px;width:516px;height:330px}
+  .deco-right{right:70px;top:96px;width:516px;height:330px}
 
   /* ===== 3D side bookcases =====
      Both side walls are turned so that their local -Z points into the room,
@@ -186,7 +186,7 @@
   .anim-case{left:120px;top:150px;width:290px;height:190px}
 
   /* mini counter */
-  .mini-counter{position:absolute;right:150px;top:130px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3}
+  .mini-counter{position:absolute;right:180px;top:130px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3}
   .mini-col{position:relative;width:94px;height:210px;background:rgba(20,12,6,.55);border:2px solid var(--wood-shelf2);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 24px rgba(0,0,0,.6)}
   .mini-fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:repeating-linear-gradient(0deg, rgba(0,0,0,.25) 0 1.5px, transparent 1.5px 20px),linear-gradient(180deg, color-mix(in srgb,var(--accent) 76%,#fff), var(--accent) 45%, var(--accent-ink));box-shadow:inset 0 3px 0 rgba(255,255,255,.3);transition:height .55s cubic-bezier(.22,1,.36,1)}
   .mini-pct{position:absolute;top:8px;left:0;right:0;text-align:center;font-family:"Fraunces",serif;font-weight:900;font-size:25px;color:#fff5e6;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
@@ -215,20 +215,94 @@
   .win-bars::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:5px;transform:translateX(-50%);background:#4a3018}
   .win-bars::after{content:"";position:absolute;top:50%;left:0;right:0;height:5px;transform:translateY(-50%);background:#4a3018}
   .win-sill{position:absolute;left:-6px;right:-6px;bottom:-8px;height:9px;border-radius:2px;background:linear-gradient(180deg,#6b4a2c,#3f2915);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+  /* snow gathering outside when the weather is set to snow */
+  .win-snowpile{position:absolute;left:-3px;right:-3px;bottom:-1px;height:24px;display:none;z-index:2;
+    background:
+      radial-gradient(circle at 16% 108%, #ffffff 0 15px, transparent 16px),
+      radial-gradient(circle at 44% 112%, #ffffff 0 19px, transparent 20px),
+      radial-gradient(circle at 72% 106%, #ffffff 0 14px, transparent 15px),
+      radial-gradient(circle at 92% 110%, #ffffff 0 12px, transparent 13px),
+      linear-gradient(180deg,#f4f8ff 0%,#dae4f2 100%)}
+  .win-snowcap{position:absolute;left:-11px;right:-11px;bottom:-16px;height:15px;display:none;z-index:3;
+    border-radius:3px;
+    background:
+      radial-gradient(circle at 12% 118%, #ffffff 0 13px, transparent 14px),
+      radial-gradient(circle at 38% 124%, #ffffff 0 16px, transparent 17px),
+      radial-gradient(circle at 64% 118%, #ffffff 0 14px, transparent 15px),
+      radial-gradient(circle at 88% 122%, #ffffff 0 12px, transparent 13px),
+      linear-gradient(180deg,#f7fbff,#cfd9e8);
+    box-shadow:0 3px 6px rgba(0,0,0,.4)}
+  .win-ledgesnow{position:absolute;left:2px;right:2px;top:-7px;height:10px;display:none;z-index:3;
+    border-radius:4px 4px 0 0;
+    background:
+      radial-gradient(circle at 25% 130%, #ffffff 0 11px, transparent 12px),
+      radial-gradient(circle at 62% 136%, #ffffff 0 13px, transparent 14px),
+      linear-gradient(180deg,#ffffff,#e4ecf7)}
+  .window.snowy .win-snowpile,
+  .window.snowy .win-snowcap,
+  .window.snowy .win-ledgesnow{display:block}
 
-  /* ---- couch ---- */
-  .couch{position:absolute;left:96px;bottom:1px;width:330px;height:118px;z-index:4;
-    transform:translateZ(62px);
-    filter:drop-shadow(0 4px 8px rgba(0,0,0,.55))}
-  .couch-back{position:absolute;left:14px;right:14px;top:0;height:52px;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,#8a5150,#6f3e3d);box-shadow:inset 0 4px 6px rgba(255,255,255,.12),inset 0 -6px 10px rgba(0,0,0,.3)}
-  .couch-seat{position:absolute;left:0;right:0;top:40px;height:58px;display:flex;gap:5px;padding:0 6px;align-items:flex-end;z-index:2}
-  .couch-arm{position:absolute;top:30px;bottom:0;width:26px;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#8a5150,#5f3433);box-shadow:inset 0 3px 5px rgba(255,255,255,.12),inset 0 -5px 8px rgba(0,0,0,.35)}
-  .couch-arm.left{left:0} .couch-arm.right{right:0}
-  .couch-base{position:absolute;left:10px;right:10px;bottom:0;height:22px;border-radius:0 0 10px 10px;background:#5f3433}
-  .cushion{position:relative;flex:1;height:52px;border-radius:10px 10px 5px 5px;background:linear-gradient(180deg,#9c6160,#7a4645);box-shadow:inset 0 3px 6px rgba(255,255,255,.14),inset 0 -5px 8px rgba(0,0,0,.3);transition:.15s;display:flex;align-items:flex-start;justify-content:center}
-  .cushion::after{content:"";position:absolute;inset:6px;border-radius:8px;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.12)}
-  .cushion .toy{position:absolute;top:-42px;left:50%;transform:translateX(-50%);font-size:52px;line-height:1;filter:drop-shadow(0 4px 4px rgba(0,0,0,.45));pointer-events:none}
-  .cushion .plus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.55);font-size:16px;font-weight:700;pointer-events:none}
+  /* ---- couch: built as a box so it reads as furniture, not a sticker ----
+     It lives on the back wall, whose local +Z points at the viewer, so every
+     surface that faces up or forward is rotated toward positive Z. */
+  .couch{position:absolute;left:96px;bottom:1px;width:330px;height:118px;z-index:5;
+    --seatd:52px;                       /* how deep the seat runs toward the viewer */
+    transform:translateZ(62px);transform-style:preserve-3d}
+  .couch-shadow{position:absolute;left:-8px;right:-8px;bottom:-10px;height:22px;border-radius:50%;
+    background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55), rgba(0,0,0,.22) 45%, transparent 72%)}
+
+  .couch-back{position:absolute;left:14px;right:14px;top:0;height:56px;transform-style:preserve-3d;
+    border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,#8a5150,#6f3e3d);
+    box-shadow:inset 0 4px 6px rgba(255,255,255,.14),inset 0 -6px 10px rgba(0,0,0,.32)}
+  /* rolled top of the backrest */
+  .couch-back::after{content:"";position:absolute;left:0;right:0;top:0;height:22px;
+    transform-origin:50% 0%;transform:rotateX(90deg);
+    background:linear-gradient(180deg,#9c6160,#7a4645);border-radius:6px 6px 0 0}
+
+  .couch-arm{position:absolute;top:26px;bottom:0;width:30px;transform-style:preserve-3d;
+    border-radius:13px 13px 4px 4px;background:linear-gradient(180deg,#8a5150,#5f3433);
+    box-shadow:inset 0 3px 5px rgba(255,255,255,.13),inset 0 -5px 8px rgba(0,0,0,.35)}
+  .couch-arm.left{left:0;transform:translateZ(6px)}
+  .couch-arm.right{right:0;transform:translateZ(6px)}
+  /* padded top of each arm, running toward the viewer */
+  .couch-arm::after{content:"";position:absolute;left:0;right:0;top:0;height:var(--seatd);
+    transform-origin:50% 0%;transform:rotateX(90deg);
+    background:linear-gradient(180deg,#9c6160 0%,#82504f 60%,#6b3f3e 100%);border-radius:8px 8px 0 0}
+  /* outer face of each arm, turned toward the camera */
+  .couch-arm::before{content:"";position:absolute;top:0;bottom:0;width:var(--seatd);
+    background:linear-gradient(90deg,#7a4645,#59312f)}
+  .couch-arm.left::before{left:0;transform-origin:0% 50%;transform:rotateY(-90deg)}
+  .couch-arm.right::before{right:0;transform-origin:100% 50%;transform:rotateY(90deg)}
+
+  .couch-base{position:absolute;left:10px;right:10px;bottom:0;height:26px;transform-style:preserve-3d;
+    border-radius:0 0 10px 10px;background:linear-gradient(180deg,#663938,#4d2b2a)}
+  /* the apron sits at the front of the seat, nearest the viewer */
+  .couch-base::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;
+    transform:translateZ(var(--seatd));border-radius:0 0 10px 10px;
+    background:linear-gradient(180deg,#5f3433,#3f2322);box-shadow:0 4px 8px rgba(0,0,0,.5)}
+
+  .couch-seat{position:absolute;left:0;right:0;top:44px;height:58px;display:flex;gap:6px;
+    padding:0 8px;align-items:flex-end;z-index:2;transform-style:preserve-3d}
+  .cushion{position:relative;flex:1;height:50px;transform-style:preserve-3d;
+    border-radius:9px 9px 5px 5px;background:linear-gradient(180deg,#9c6160,#7a4645);
+    box-shadow:inset 0 3px 6px rgba(255,255,255,.15),inset 0 -5px 8px rgba(0,0,0,.3);
+    transition:.15s;display:flex;align-items:flex-start;justify-content:center}
+  /* the seat surface of each cushion, extending out toward the viewer */
+  .cushion::before{content:"";position:absolute;left:0;right:0;top:0;height:var(--seatd);
+    transform-origin:50% 0%;transform:rotateX(90deg);border-radius:7px 7px 0 0;
+    background:linear-gradient(180deg,#a86a69 0%,#96605f 55%,#7d4a49 100%);
+    box-shadow:inset 0 0 12px rgba(0,0,0,.18)}
+  .cushion::after{content:"";position:absolute;inset:5px;border-radius:7px;
+    box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.14)}
+  .cushion .toy{position:absolute;top:-30px;left:50%;font-size:50px;line-height:1;
+    transform:translateX(-50%) translateZ(30px) rotateX(-7deg);transform-origin:50% 100%;
+    text-shadow:0 5px 5px rgba(0,0,0,.45);pointer-events:none}
+  .cushion .toy-shadow{position:absolute;top:16px;left:50%;width:52px;height:15px;display:none;
+    transform:translateX(-50%) translateZ(28px) rotateX(-90deg);transform-origin:50% 100%;
+    border-radius:50%;background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.5), transparent 70%)}
+  .cushion.has-toy .toy-shadow{display:block}
+  .cushion .plus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:rgba(255,255,255,.55);font-size:16px;font-weight:700;pointer-events:none}
   .cushion.has-toy .plus{display:none}
 
   /* ---- garland string (hangs in front of the window and shelves) ---- */
@@ -250,7 +324,7 @@
   .hit-layer button{position:absolute;pointer-events:auto;background:transparent;border:0;
     padding:0;margin:0;cursor:pointer;border-radius:10px}
   .hit-layer button:focus-visible{outline:3px solid #ffd88a;outline-offset:2px}
-  .cushion.hot{filter:brightness(1.14);transform:translateY(-2px)}
+  .cushion.hot{transform:translateZ(9px);box-shadow:inset 0 3px 6px rgba(255,255,255,.28),inset 0 -5px 8px rgba(0,0,0,.3),0 0 14px rgba(255,220,170,.35)}
 
   /* ---- owl thought bubble: flat overlay so it stays readable at any room scale ---- */
   .owl-bubble{position:absolute;left:0;top:0;width:max-content;max-width:min(46%,186px);z-index:26;
@@ -267,7 +341,7 @@
 
 
   /* ================= OWL ON A BRANCH ================= */
-  .owl-zone{position:absolute;right:8px;top:104px;width:136px;height:132px;z-index:4;pointer-events:none}
+  .owl-zone{position:absolute;right:40px;top:64px;width:124px;height:120px;z-index:6;pointer-events:none}
   .owl-zone svg{overflow:visible}
   .owl-body{transform-box:fill-box;transform-origin:50% 100%}
   .owl-head{transform-box:fill-box;transform-origin:50% 88%}
@@ -298,12 +372,12 @@
   /* fly down to the floor, peck, fly back up */
   @keyframes owlFly{
     0%{transform:translate(0,0) rotate(0)}
-    10%{transform:translate(-14px,-26px) rotate(-9deg)}
-    38%{transform:translate(-58px,268px) rotate(5deg)}
-    46%,74%{transform:translate(-62px,292px) rotate(0)}
-    88%{transform:translate(-18px,-16px) rotate(-7deg)}
+    9%{transform:translate(-16px,-30px) rotate(-9deg)}
+    34%{transform:translate(-62px,352px) rotate(5deg)}
+    42%,76%{transform:translate(-70px,380px) rotate(0)}   /* standing on the floor */
+    90%{transform:translate(-20px,-18px) rotate(-7deg)}
     100%{transform:translate(0,0) rotate(0)}}
-  .owl.fly{animation:owlFly 7s cubic-bezier(.4,.1,.5,1)}
+  .owl.fly{animation:owlFly 8.4s cubic-bezier(.4,.1,.5,1)}
 
   /* pecking at the floor */
   @keyframes peck{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(7px) rotate(15deg)}}
@@ -454,22 +528,26 @@
                 <div class="win-stars" id="winStars"></div>
                 <div class="win-hill"></div>
                 <div class="win-precip" id="winPrecip"></div>
+                <div class="win-snowpile"></div>
               </div>
               <div class="win-bars"></div>
+              <div class="win-ledgesnow"></div>
               <div class="win-sill"></div>
+              <div class="win-snowcap"></div>
             </div>
 
             <div class="bookcase anim-case" id="animCase"></div>
 
             <div class="couch" id="couch">
+              <div class="couch-shadow"></div>
               <div class="couch-back"></div>
               <div class="couch-arm left"></div>
               <div class="couch-arm right"></div>
               <div class="couch-base"></div>
               <div class="couch-seat">
-                <div class="cushion" data-i="0"><span class="plus">+</span><span class="toy"></span></div>
-                <div class="cushion" data-i="1"><span class="plus">+</span><span class="toy"></span></div>
-                <div class="cushion" data-i="2"><span class="plus">+</span><span class="toy"></span></div>
+                <div class="cushion" data-i="0"><span class="plus">+</span><span class="toy-shadow"></span><span class="toy"></span></div>
+                <div class="cushion" data-i="1"><span class="plus">+</span><span class="toy-shadow"></span><span class="toy"></span></div>
+                <div class="cushion" data-i="2"><span class="plus">+</span><span class="toy-shadow"></span><span class="toy"></span></div>
               </div>
             </div>
 
@@ -969,7 +1047,10 @@ function renderWeather(){
 }
 function renderPrecip(){
   const layer=document.getElementById("winPrecip"); layer.innerHTML="";
-  const p=state.weather.precip; if(p==="none") return;
+  const p=state.weather.precip;
+  const win=document.getElementById("window");
+  if(win) win.classList.toggle("snowy", p==="snow");
+  if(p==="none") return;
   const n=p==="rain"?34:26;
   for(let i=0;i<n;i++){
     const d=document.createElement("div");
@@ -1102,9 +1183,32 @@ function renderSeasonDecor(){
           </g>
         </svg>
       </div>`;
+  }else if(state.season==="halloween"){
+    d.innerHTML=`
+      <div class="decor-item" style="left:622px;bottom:1px;width:120px;height:94px">
+        <div class="gshadow" style="width:92%;height:20px"></div>
+        <svg viewBox="0 0 120 94" width="120" height="94">
+          <ellipse cx="34" cy="80" rx="17" ry="13" fill="#c9691f"/>
+          <path d="M26,72 q8,-5 16,0" stroke="#a4521a" stroke-width="1.6" fill="none"/>
+          <rect x="32" y="63" width="4.5" height="7" rx="2" fill="#4a7a35"/>
+          <ellipse cx="72" cy="60" rx="31" ry="27" fill="#e8792b"/>
+          <path d="M72,33 q-13,27 0,54 M72,33 q13,27 0,54" stroke="#c9631f" stroke-width="2" fill="none"/>
+          <path d="M48,52 q10,-8 20,-2 M76,50 q10,-6 20,2" stroke="#c9631f" stroke-width="1.6" fill="none"/>
+          <rect x="68" y="26" width="8" height="11" rx="3" fill="#4a7a35"/>
+          <path d="M76,30 q9,-5 12,3" stroke="#4a7a35" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M58,52 l7,-8 l7,8 Z" fill="#3a1d05"/>
+          <path d="M74,52 l7,-8 l7,8 Z" fill="#3a1d05"/>
+          <path d="M56,66 h32 l-5,7 h-5 l-3,-4 l-3,4 h-5 l-4,-4 l-3,4 h-2 Z" fill="#3a1d05"/>
+          <path d="M58,52 l7,-8 l7,8 Z" fill="#ffd166" opacity=".55"/>
+          <path d="M74,52 l7,-8 l7,8 Z" fill="#ffd166" opacity=".55"/>
+          <path d="M56,66 h32 l-5,7 h-5 l-3,-4 l-3,4 h-5 l-4,-4 l-3,4 h-2 Z" fill="#ffd166" opacity=".45"/>
+          <ellipse cx="72" cy="62" rx="26" ry="22" fill="#ffb703" opacity=".14"/>
+          <ellipse cx="104" cy="84" rx="12" ry="9" fill="#d2761f"/>
+        </svg>
+      </div>`;
   }else if(state.season==="stpatties"){
     d.innerHTML=`
-      <div class="decor-item" style="left:657px;bottom:1px;width:120px;height:96px">
+      <div class="decor-item" style="left:622px;bottom:1px;width:120px;height:96px">
         <div class="gshadow" style="width:92%;height:20px"></div>
         <svg viewBox="0 0 120 96" width="120" height="96">
           <defs><linearGradient id="rb" x1="0" y1="0" x2="1" y2="0">
@@ -1123,7 +1227,7 @@ function renderSeasonDecor(){
       </div>`;
   }else if(state.season==="thanksgiving"){
     d.innerHTML=`
-      <div class="decor-item" style="left:655px;bottom:1px;width:124px;height:92px">
+      <div class="decor-item" style="left:620px;bottom:1px;width:124px;height:92px">
         <div class="gshadow" style="width:96%;height:21px"></div>
         <svg viewBox="0 0 124 92" width="124" height="92">
           <path d="M96,44 C96,26 74,20 56,28 C40,35 30,50 16,62 C28,74 44,78 60,74 C80,69 96,60 96,44 Z"
@@ -1143,7 +1247,7 @@ function renderSeasonDecor(){
       </div>`;
   }else if(state.season==="easter"){
     d.innerHTML=`
-      <div class="decor-item" style="left:659px;bottom:1px;width:116px;height:94px">
+      <div class="decor-item" style="left:624px;bottom:1px;width:116px;height:94px">
         <div class="gshadow" style="width:88%;height:19px"></div>
         <svg viewBox="0 0 116 94" width="116" height="94">
           <path d="M22,42 A36,30 0 0 1 94,42" fill="none" stroke="#caa15e" stroke-width="5"/>
@@ -1302,11 +1406,13 @@ function owlTurn(){ owlRun("turn",2150); }
 function owlFly(){
   if(!owl) return;
   owlBusy=true;
-  owl.classList.add("fly","flying");
-  // peck once he is down on the floor
-  setTimeout(()=>{ owl.classList.add("peck"); },3300);
-  setTimeout(()=>{ owl.classList.remove("peck"); },5100);
-  setTimeout(()=>{ owl.classList.remove("fly","flying"); owlBusy=false; },7050);
+  const D=8400;                       // matches the owlFly keyframes
+  owl.classList.add("fly","flying");  // wings beating on the way down
+  setTimeout(()=>owl.classList.remove("flying"), D*0.42);  // touches down, wings still
+  setTimeout(()=>owl.classList.add("peck"),      D*0.47);  // pecks at the floorboards
+  setTimeout(()=>owl.classList.remove("peck"),   D*0.71);
+  setTimeout(()=>owl.classList.add("flying"),    D*0.77);  // beats back up to the branch
+  setTimeout(()=>{ owl.classList.remove("fly","flying"); owlBusy=false; }, D+60);
 }
 function owlIdle(){
   clearTimeout(owlIdleTimer);
