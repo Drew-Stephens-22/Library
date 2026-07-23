@@ -236,7 +236,7 @@
 
   /* ---- seasonal floor decor: pushed forward so it stands out on the floorboards ---- */
   .season-decor{position:absolute;inset:0;pointer-events:none;z-index:3;
-    transform:translateZ(120px);transform-style:preserve-3d}
+    transform:translateZ(88px);transform-style:preserve-3d}
   .decor-item{position:absolute}
   /* cast shadow, sized and darkened by the sun outside */
   .gshadow{position:absolute;left:50%;bottom:-9px;width:100%;height:20px;border-radius:50%;
@@ -252,31 +252,22 @@
   .hit-layer button:focus-visible{outline:3px solid #ffd88a;outline-offset:2px}
   .cushion.hot{filter:brightness(1.14);transform:translateY(-2px)}
 
-  /* ---- always-visible flat readout (the 3D column gets tiny on a phone) ---- */
-  .flat-readout{display:flex;align-items:center;gap:12px;margin:14px auto 0;max-width:420px}
-  .fr-bar{flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--text) 12%, var(--surface));
-    border:1px solid var(--border);overflow:hidden}
-  .fr-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,
-    color-mix(in srgb,var(--accent) 72%,#fff), var(--accent));transition:width .5s cubic-bezier(.22,1,.36,1)}
-  .fr-text{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--muted);white-space:nowrap}
-  .fr-text b{color:var(--text);font-size:15px}
-
   /* ---- owl thought bubble: flat overlay so it stays readable at any room scale ---- */
-  .owl-bubble{position:absolute;top:12px;right:12px;max-width:min(62%,260px);z-index:26;
-    background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:14px;
-    padding:10px 13px;font-size:13.5px;line-height:1.35;box-shadow:0 10px 24px rgba(0,0,0,.35);
-    opacity:0;transform:translateY(-6px) scale(.94);pointer-events:none;
-    transition:opacity .3s ease, transform .3s cubic-bezier(.34,1.4,.5,1)}
+  .owl-bubble{position:absolute;left:0;top:0;width:max-content;max-width:min(46%,186px);z-index:26;
+    background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:13px;
+    padding:7px 10px;font-size:11.5px;line-height:1.32;box-shadow:0 8px 20px rgba(0,0,0,.35);
+    opacity:0;transform:translateY(5px) scale(.9);transform-origin:50% 120%;pointer-events:none;
+    transition:opacity .25s ease, transform .3s cubic-bezier(.34,1.4,.5,1)}
   .owl-bubble.show{opacity:1;transform:none}
-  .owl-bubble::after{content:"";position:absolute;right:26px;bottom:-7px;width:12px;height:12px;
-    background:var(--surface);border-right:1px solid var(--border);border-bottom:1px solid var(--border);
-    transform:rotate(45deg)}
-  .owl-bubble .who{display:block;font-family:"JetBrains Mono",monospace;font-size:9.5px;
-    letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  /* two little puffs so it reads as a thought cloud aimed at the owl below */
+  .owl-bubble::before{content:"";position:absolute;left:var(--tail,30px);bottom:-8px;
+    width:9px;height:9px;border-radius:50%;background:var(--surface);border:1px solid var(--border)}
+  .owl-bubble::after{content:"";position:absolute;left:calc(var(--tail,30px) + 4px);bottom:-17px;
+    width:6px;height:6px;border-radius:50%;background:var(--surface);border:1px solid var(--border)}
 
 
   /* ================= OWL ON A BRANCH ================= */
-  .owl-zone{position:absolute;right:8px;top:88px;width:136px;height:132px;z-index:4;pointer-events:none}
+  .owl-zone{position:absolute;right:8px;top:104px;width:136px;height:132px;z-index:4;pointer-events:none}
   .owl-zone svg{overflow:visible}
   .owl-body{transform-box:fill-box;transform-origin:50% 100%}
   .owl-head{transform-box:fill-box;transform-origin:50% 88%}
@@ -294,9 +285,10 @@
 
   /* head turn */
   @keyframes headTurn{
-    0%,100%{transform:rotate(0) translateX(0)}
-    25%{transform:rotate(-15deg) translateX(-3px)}
-    60%{transform:rotate(14deg) translateX(3px)}}
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-11px)}
+    52%{transform:translateX(11px)}
+    76%{transform:translateX(-4px)}}
   .owl.turn .owl-head{animation:headTurn 2.1s ease-in-out}
 
   /* blink */
@@ -544,12 +536,7 @@
         </div>
       </div>
       <div class="hit-layer" id="hitLayer"></div>
-      <div class="owl-bubble" id="owlBubble"><span class="who">Professor Owl</span><span id="owlQuote"></span></div>
-    </div>
-
-    <div class="flat-readout">
-      <div class="fr-bar"><div class="fr-fill" id="frFill"></div></div>
-      <div class="fr-text"><b id="frRead">0</b> / <span id="frGoal">30</span> &nbsp;<span id="frPct">0%</span></div>
+      <div class="owl-bubble" id="owlBubble"><span id="owlQuote"></span></div>
     </div>
 
     <div class="arrows">
@@ -1243,8 +1230,10 @@ function fitStage(){
   const sc=Math.min(1, w/target);
   stage.style.transformOrigin="center center";
   stage.style.transform = sc<0.999 ? `scale(${sc.toFixed(4)})` : "none";
-  outer.style.height = Math.max(215, Math.round((phone?560:486)*sc)) + "px";
+  outer.style.height = Math.max(240, Math.round((phone?672:486)*sc)) + "px";
   layoutHits();
+  const bub=document.getElementById("owlBubble");
+  if(bub && bub.classList.contains("show") && typeof positionBubble==="function") positionBubble();
 }
 addEventListener("resize", ()=>{ fitStage(); });
 addEventListener("orientationchange", ()=>setTimeout(fitStage,250));
@@ -1265,11 +1254,6 @@ function renderHome(){
   const ratio=state.goal>0?state.read/state.goal:0;
   miniFill.style.height=Math.max(0,Math.min(100,ratio*100))+"%";
   miniPct.textContent=Math.round(ratio*100)+"%";
-  const pct=Math.round(ratio*100);
-  document.getElementById("frFill").style.width=Math.max(0,Math.min(100,ratio*100))+"%";
-  document.getElementById("frRead").textContent=state.read;
-  document.getElementById("frGoal").textContent=state.goal;
-  document.getElementById("frPct").textContent=pct+"%";
   if(state.read>state.goal){ overBadge.textContent="🎉 "+(state.read-state.goal)+" past your goal"; overBadge.classList.add("show"); }
   else if(state.read===state.goal && state.goal>0){ overBadge.textContent="🎉 goal reached — nice work"; overBadge.classList.add("show"); }
   else overBadge.classList.remove("show");
@@ -1337,11 +1321,33 @@ function owlIdle(){
     owlIdle();
   }, wait);
 }
+function positionBubble(){
+  const zone=document.querySelector(".owl-zone");
+  const outer=document.querySelector(".stage-outer");
+  if(!zone||!outer||!owlBubble) return;
+  const ob=outer.getBoundingClientRect();
+  const r=zone.getBoundingClientRect();
+  if(!r.width||!ob.width) return;
+  const bw=owlBubble.offsetWidth, bh=owlBubble.offsetHeight;
+  // the owl sits in the lower half of its zone; aim at his head
+  const headX=r.left-ob.left+r.width*0.52;
+  const headY=r.top -ob.top +r.height*0.28;
+  let left=headX-bw/2;
+  left=Math.max(6, Math.min(ob.width-bw-6, left));
+  let top=headY-bh-20;
+  if(top<6) top=6;
+  owlBubble.style.left=Math.round(left)+"px";
+  owlBubble.style.top =Math.round(top)+"px";
+  const tail=Math.max(10, Math.min(bw-22, headX-left-6));
+  owlBubble.style.setProperty("--tail", Math.round(tail)+"px");
+}
 /* only speaks when a book is added to the home counter */
 function owlSays(){
   if(!owlBubble) return;
   owlQuote.textContent=pick(OWL_LINES);
+  owlBubble.style.visibility="hidden";
   owlBubble.classList.add("show");
+  requestAnimationFrame(()=>{ positionBubble(); owlBubble.style.visibility=""; });
   if(!owlBusy) owlFlap();
   clearTimeout(owlBubbleTimer);
   owlBubbleTimer=setTimeout(()=>owlBubble.classList.remove("show"), 5200);
